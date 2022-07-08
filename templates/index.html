@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<h1>Welcome to MH's index</h1>
+<p>Things might be broken, so please be patient.</p>
+
+<p>On this page I'm trying to create an index of all the content that has ever been released on contortion paysites. This is obviously a massive undertaking, and so far I've barely scratched the surface.</p>
+
+<p>You can <a href="https://discord.gg/smgc4tePxB">join the #Contortion discord server!</a></p>
+
+<p>See also my <a href="./models/index.html">index of models</a>.</p>
+
+<table>
+    {% for family, sites in site_info  %}
+    <tr><th colspan=6><h2>{{ family }}</h2></th></tr>
+    {% for internal_name, site in sites %}
+    <tr>
+        {% if "url" in site %}
+        <td><a href="{{ site["url"] }}">&#x1f310;</a></td>
+        {% else %}
+        <td></td>
+        {% endif %}
+        {% if "wip" in site["tags"] %}
+        <td>&#x1f6a7;</td>
+        {% else %}
+        <td><a href="sites/{{ internal_name }}/index.html">&#x1f4da;</a></td>
+        {% endif %}
+		<td>{{ site["name"] }}{% if "ppv" in site["tags"] %} <span class="tooltip" title="pay-per-view">&#x1f4b8;</span>{% endif %}</td>
+        {% if "dates" in site %}
+        <td>{% if site["dates"][0] %}{{ site["dates"][0] }}{% endif %}</td>
+        <td>–</td>
+        <td>{% if site["dates"][1] %}{{ site["dates"][1] }}{% endif %}</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    {% endfor %}
+</table>
+{% endblock %}

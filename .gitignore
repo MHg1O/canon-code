@@ -1,0 +1,6 @@
+html
+data
+.DS_Store
+*.swp
+__pycache__
+*.jpg

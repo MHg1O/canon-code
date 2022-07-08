@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Models{% endblock %}
+
+{% block head %}
+<style>.private { color: red; }</style>
+{% endblock %}
+
+{% block body %}
+Jump to
+<ul>
+	{% for family in families.keys() %}
+	<li><a href="#{{ family }}">{{ family }}</a></li>
+	{% endfor %}
+</ul>
+
+{% for family, models in families.items() %}
+<table style="margin-left: auto; margin-right: auto">
+	<tr id="{{ family }}"><th colspan=4><h1>{{ family }}</h1></th></tr>
+	{% for row in models %}
+	<tr>
+		{% for model in row %}
+		{% if model %}
+		<td>
+			<a href="./{{ model.model_id }}.html"><img src="{{ model.image }}"></a>
+			<p align="center"{% if model.is_private %} class="private"{% endif %}>{{ model.name }}</p>
+		</td>
+		{% else %}
+		<td width=200></td>
+		{% endif %}
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</table>
+{% endfor %}
+{% endblock %}

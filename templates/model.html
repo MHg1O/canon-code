@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block head %}
+<script src="../../static/script.js"></script>
+{% if private %}<style>h1 { color: red; } </style>{% endif %}
+{% endblock %}
+
+{% block body %}
+<h1>{{ name }}</h1>
+
+<img src="{{ image }}">
+
+{{ biography | safe }}
+
+{% if links %}
+<h2>Links</h2>
+<ul>
+	{% for link in links %}
+	<li>{{ link | safe }}</li>
+	{% endfor %}
+</ul>
+{% endif %}
+
+<h2>Appearances</h2>
+{% for site, item_ids in appearances.items() %}
+<div>
+	<h3>{{ site_names[site] }} ({{ item_ids | length }}) <button onclick="toggle()">&#x2193;</button></h3>
+	<ul class="hideable" style="display:none">
+		{% for item in item_ids %}
+		<li><a href="{{ url_for('preview', family=item.family, site=item.site, _anchor=item.item_id) }}">{{ item.item_id }}{% if item.name %} {{ item.name }}{% endif %}</a></li>
+		{% endfor %}
+	</ul>
+</div>
+{% endfor %}
+{% endblock %}

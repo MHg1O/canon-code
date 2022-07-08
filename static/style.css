@@ -1,0 +1,8 @@
+.tooltip {
+	cursor: help;
+	text-decoration: underline dotted;
+}
+
+.private {
+    color: red;
+}
