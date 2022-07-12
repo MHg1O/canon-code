@@ -36,7 +36,7 @@ def pattern_match(name, pat):
     return any(fnmatch.fnmatch(name, p) for p in patterns)
 
 def pattern_filter(names, pat):
-    return filter(lambda name: pattern_match(pat, name), names)
+    return filter(lambda name: pattern_match(name, pat), names)
 
 def min_substring_distance(a, b, ignore_case=True):
     if len(a) == len(b):
@@ -224,8 +224,6 @@ class SiteModelInfo:
 
                             if "credited_as" in p:
                                 model_name += f" (as {p['credited_as']})"
-                            if "display_name" in p:
-                                raise Exception()
                             credit = self.Credit(model_name, model_id)
                         else:
                             raise Exception()
