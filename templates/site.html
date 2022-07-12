@@ -1,51 +1,78 @@
 {% extends "base.html" %}
 
-{% block title %}{{ name }}{% endblock %}
+{% block title %}{{ site.config["name"] }}{% endblock %}
 
 {% block body %}
-Generated at {{ generated.strftime("%Y-%m-%d %H:%M:%S") }}
 
-{% if notes %}
+Generated at {{ generated.strftime("%Y-%m-%d %H:%M:%S") }}<br>
+{% if data_updated %}Data up-to-date as of {{ data_updated }}<br>{% endif %}
+
+<h1>{{ site.config["name"] }}{% if "url" in site.config %} <a href="{{ site.config['url'] }}">&#x1f310;</a>{% endif %}</h1>
+
+{% if shortcuts %}
+Jump to:
 <ul>
-    {% for note in notes %}
-    <li>{{ note }}</li>
+    {% if "latest_video" in shortcuts %}
+    <li><a href="#{{ site.latest_video() }}">Latest video</a></li>
+    {% endif %}
+    {% if "latest_photo" in shortcuts %}
+    <li><a href="#{{ site.latest_photo() }}">Latest photoset</a></li>
+    {% endif %}
+</ul>
+{% endif %}
+
+{% if "notes" in site.config %}
+<ul>
+    {% for note in site.config["notes"] %}
+    <li>{{ note | markdown | safe }}</li>
     {% endfor %}
 </ul>
 {% endif %}
 
 <table>
-{% for item_id, item in items %}
+    {% for item_id, item in site.items() %}
     <tr id="{{ item_id }}">
         <td width=25%>
-			<h3>{{ item_id }}{% if "name" in item %} {{ item["name"] }}{% endif %}</h3>
-            {% if "description" in item %}{{ item["description"] | safe }}<br>{% endif %}
-            {% if "date" in item %}Date: {{ item["date"] }}<br>{% endif %}
-			{% for size_key, size_value in item.get("size", {}).items() %}
-			{{ size_key.title() }}: {{ size_value }}<br>
-			{% endfor %}
-            {% if "price" in item %}Price: ${{ item["price"] }}<br>{% endif %}
-            {% if item.get("model") %}
-			Model: {% for model in item["model"] %}<a href="{{ url_for('model_page', model_id=model.model_id) }}">{{ model.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}<br>
+            <h3>{{ item_id }}{% if "name" in item %} {{ item["name"] }}{% endif %}</h3>
+            {% if "description" in item %}
+            <p>{{ item["description"] | safe }}</p>
             {% endif %}
-            {% if item.get("related") %}
-            Related:
-                {% for family, site, item_id in item["related"] %}
-                <a href="{{ url_for('preview', family=family, site=site, _anchor=item_id) }}">{{ get_item_name(family, site, item_id) }}</a>{% if not loop.last %}, {% endif %}
+            <p>
+                {% if "date" in item %}
+                Date: {{ item["date"] }}<br>
+                {% endif %}
+                {% for size_key, size_value in item.get("size", {}).items() %}
+                {{ size_key.title() }}: {{ size_value }}<br>
                 {% endfor %}
-			<br>{% endif %}
-            {% if "url" in item %}<a href="{{ item['url'] }}">Web link</a><br>{% endif %}
-            {% if "archive_url" in item %}<a href="{{ item['archive_url'] }}">Archive link</a><br>{% endif %}
+                {% if "price" in item %}
+                Price: ${{ item["price"] }}<br>
+                {% endif %}
+                {% if models.items[item_id] %}
+                Model: {% for model in models.items[item_id] %}<a href="../../../models/{{ model.model_id }}.html">{{ model.model_name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}<br>
+                {% endif %}
+                {% if (item["site_id"], item.item_id) in relations %}
+                Related:
+                {% for related_item in relations[(item["site_id"], item.item_id)] %}<a href="../../{{ related_item['internal_url'] }}">{% if item["site_name"] != related_item["site_name"] %}{{ related_item["site_name"] }} {% endif %}{{ related_item.item_id }}</a>{% if not loop.last %}, {% endif %}
+                {% endfor %}<br>
+                {% endif %}
+                {% if "url" in item %}
+                <a href="{{ item['url'] }}">Web link</a><br>
+                {% endif %}
+                {% if "archive_url" in item %}
+                <a href="{{ item['archive_url'] }}">Archive link</a><br>
+                {% endif %}
+            </p>
         </td>
         <td>
-            {% for preview in item.get("previews", []) + item.get("previews_local", []) %}
+            {% for preview in item["previews"] %}
             {% if is_image(preview) %}
             <img src="{{ preview }}" height=240 loading=lazy>
             {% else %}
-            <video height=240 preload="metadata" controls><source src="{{ preview }}" type="video/mp4"></video>
+            <video height=240 preload=metadata controls><source src="{{ preview }}" type=video/mp4></video>
             {% endif %}
             {% endfor %}
         </td>
     </tr>
-{% endfor %}
+    {% endfor %}
 </table>
 {% endblock %}

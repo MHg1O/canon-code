@@ -1,0 +1,169 @@
+{
+    "index_root": "html",
+    "static_files": "static",
+    "models_file": "data/model-info.json",
+    "private_models_file": "data/private-models.json",
+    "relations_dir": "data/relations",
+	"families": {
+        "Flex-Mania": {
+            "flex-mania/body.flex-mania.net": "data/flex-mania/body.flex-mania.net/config.json",
+			"flex-mania/collection.flex-mania.net": "data/flex-mania/collection.flex-mania.net/config.json",
+            "flex-mania/igum.online": "data/flex-mania/igum.online/config.json",
+            "flex-mania/nadegda.flex-mania.net-1": "data/flex-mania/nadegda.flex-mania.net-1/config.json",
+            "flex-mania/nadegda.flex-mania.net-2": "data/flex-mania/nadegda.flex-mania.net-2/config.json",
+            "flex-mania/nastya.flex-mania.net": "data/flex-mania/nastya.flex-mania.net/config.json",
+            "flex-mania/twist-me.com": "data/flex-mania/twist-me.com/config.json",
+            "flex-mania/kpcon.com": "$extra_configs/flex-mania/kpcon.com"
+        },
+        "Satyridae": {
+            "satyridae/realbubblegum.com-1": "data/satyridae/realbubblegum.com-1/config.json",
+            "satyridae/bustybendy.com-1": "$extra_configs/satyridae/bustybendy.com-1",
+            "satyridae/bendydarling.com": "$extra_configs/satyridae/bendydarling.com",
+            "satyridae/gymrotic.com-1": "data/satyridae/gymrotic.com-1/config.json",
+            "satyridae/gymnastic.xxx": "$extra_configs/satyridae/gymnastic.xxx",
+            "satyridae/contortionuniverse.com-1": "data/satyridae/contortionuniverse.com-1/config.json",
+            "satyridae/flexilady.com-1": "data/satyridae/flexilady.com-1/config.json",
+            "satyridae/flexilady.com-2": "data/satyridae/flexilady.com-2/config.json",
+            "satyridae/flexilady.com-3": "$extra_configs/satyridae/flexilady.com-3",
+            "satyridae/rubber-models.com": "data/satyridae/rubber-models.com/config.json",
+            "satyridae/femlatex.com": "data/satyridae/femlatex.com/config.json",
+            "satyridae/zentaidolls.com": "data/satyridae/zentaidolls.com/config.json"
+        },
+        "Zlata.de": {
+            "zlata.de/zlata.de-1": "$extra_configs/zlata.de/zlata.de-1",
+            "zlata.de/zlata.de-2": "$extra_configs/zlata.de/zlata.de-2",
+            "zlata.de/zlata.de-3": "data/zlata.de/zlata.de-3/config.json",
+            "zlata.de/zlata.de-4": "data/zlata.de/zlata.de-4/config.json",
+            "zlata.de/zlatexa.com": "data/zlata.de/zlatexa.com/config.json",
+            "zlata.de/clips4sale-7327": "data/zlata.de/clips4sale-7327/config.json",
+            "zlata.de/clips4sale-115156": "data/zlata.de/clips4sale-115156/config.json",
+            "zlata.de/iamflexigirl.com": "data/zlata.de/iamflexigirl.com/config.json",
+            "zlata.de/nikitzo.com": "$extra_configs/zlata.de/nikitzo.com"
+        },
+        "Topflexmodels": {
+            "topflexmodels/topflexmodels.com-1": "data/topflexmodels/topflexmodels.com-1/config.json",
+            "topflexmodels/topflexmodels.com-2": "data/topflexmodels/topflexmodels.com-2/config.json",
+            "topflexmodels/topflexmodels.com-3": "data/topflexmodels/topflexmodels.com-3/config.json",
+            "topflexmodels/flexiteeny.com": "$extra_configs/topflexmodels/flexiteeny.com",
+            "topflexmodels/flexi-nastia.com": "$extra_configs/topflexmodels/flexi-nastia.com",
+            "topflexmodels/flexi-dasha.com": "$extra_configs/topflexmodels/flexi-dasha.com",
+            "topflexmodels/flexi-tanya.com": "$extra_configs/topflexmodels/flexi-tanya.com"
+        },
+        "Flexshow": {
+            "flexshow/flexshow.com-1": "$extra_configs/flexshow/flexshow.com-1",
+            "flexshow/flexshow.com-2": "data/flexshow/flexshow.com-2/config.json",
+            "flexshow/flexshow-archive.com-2": "data/flexshow/flexshow-archive.com-2/config.json",
+            "flexshow/flexshow-ballet.com-2": "data/flexshow/flexshow-ballet.com-2/config.json",
+            "flexshow/flexshow-casting.com": "$extra_configs/flexshow/flexshow-casting.com",
+            "flexshow/flexshow-media.com-2": "data/flexshow/flexshow-media.com-2/config.json",
+            "flexshow/alenazavialova.com": "$extra_configs/flexshow/alenazavialova.com",
+            "flexshow/fantastic-bodies.com-2": "data/flexshow/fantastic-bodies.com-2/config.json"
+        },
+        "Crystal Lizard": {
+            "crystal-lizard/cl-adagio.com": "data/crystal-lizard/cl-adagio.com/config.json",
+            "crystal-lizard/cl-archives.com": "data/crystal-lizard/cl-archives.com/config.json",
+            "crystal-lizard/cl-bikini.com": "data/crystal-lizard/cl-bikini.com/config.json",
+            "crystal-lizard/cl-erotic.com": "data/crystal-lizard/cl-erotic.com/config.json",
+            "crystal-lizard/cl-ladder.com": "data/crystal-lizard/cl-ladder.com/config.json",
+            "crystal-lizard/cl-stretch.com": "data/crystal-lizard/cl-stretch.com/config.json",
+            "crystal-lizard/cl-studio.com-1": "data/crystal-lizard/cl-studio.com-1/config.json",
+            "crystal-lizard/cl-studio.com-2": "data/crystal-lizard/cl-studio.com-2/config.json",
+            "crystal-lizard/cl-studio.com-dvd": "data/crystal-lizard/cl-studio.com-dvd/config.json",
+            "crystal-lizard/cl-videos.com": "data/crystal-lizard/cl-videos.com/config.json",
+            "crystal-lizard/dl-assistant.com": "data/crystal-lizard/dl-assistant.com/config.json",
+            "crystal-lizard/dl-dream.com": "data/crystal-lizard/dl-dream.com/config.json",
+            "crystal-lizard/dl-models.com": "data/crystal-lizard/dl-models.com/config.json",
+            "crystal-lizard/dl-videos.com": "data/crystal-lizard/dl-videos.com/config.json",
+            "crystal-lizard/flexiblealla.com": "data/crystal-lizard/flexiblealla.com/config.json",
+            "crystal-lizard/perfectflex.com": "$extra_configs/crystal-lizard/perfectflex.com"
+        }
+	},
+    "extra_configs": {
+        "flex-mania/kpcon.com": {
+            "name": "KPConontortion",
+            "dates": [2005, 2012],
+            "tags": ["wip"]
+        },
+        "satyridae/bustybendy.com-1": {
+            "name": "BustyBendy",
+            "dates": [2017, 2020],
+            "tags": ["show_dates", "wip"]
+        },
+        "satyridae/bendydarling.com": {
+            "name": "BendyDarling",
+            "dates": [2018, 2020],
+            "tags": ["show_dates", "wip"]
+        },
+        "satyridae/gymnastic.xxx": {
+            "name": "gymnastic.xxx",
+            "tags": ["wip"],
+            "url": "https://gymnastic.xxx"
+        },
+        "satyridae/flexilady.com-3": {
+            "name": "FlexiLady",
+            "dates": [2022, null],
+            "url": "https://flexilady.com",
+            "tags": ["wip", "show_dates"]
+        },
+		"zlata.de/zlata.de-1": {
+			"name": "zlata.de",
+			"dates": [2002, 2006],
+			"tags": ["show_dates", "wip"]
+		},
+		"zlata.de/zlata.de-2": {
+			"name": "zlata.de",
+			"dates": [2006, 2010],
+			"tags": ["show_dates", "wip"]
+		},
+		"zlata.de/nikitzo.com": {
+			"name": "nikitzo.com",
+			"url": "https://nikitzo.com/",
+			"tags": ["wip"]
+		},
+        "topflexmodels/flexiteeny.com": {
+            "name": "Flexiteeny",
+            "tags": ["wip"]
+        },
+        "topflexmodels/flexi-nastia.com": {
+            "name": "Flexi Nastia",
+            "tags": ["wip"]
+        },
+        "topflexmodels/flexi-dasha.com": {
+            "name": "Flexi Dasha",
+            "tags": ["wip"]
+        },
+        "topflexmodels/flexi-tanya.com": {
+            "name": "Flexi Tanya",
+            "tags": ["wip"]
+        },
+        "topflexmodels/flexi-ksenia.com": {
+            "name": "Flexi Ksenia",
+            "tags": ["wip"]
+        },
+        "flexshow/flexshow.com-1": {
+            "name": "Flexshow",
+            "dates": [2003, 2015],
+            "tags": ["wip", "show_dates"]
+        },
+        "flexshow/flexshow-casting.com": {
+            "name": "Flexshow Casting",
+            "tags": ["wip"]
+        },
+        "flexshow/alenazavialova.com": {
+            "name": "alenazavialova.com",
+            "tags": ["wip"]
+        },
+        "flexshow/irishok.ru": {
+            "name": "Irishok",
+            "tags": ["wip"]
+        },
+        "crystal-lizard/perfectflex.com": {
+            "name": "PerfectFlex",
+            "tags": ["wip"]
+        },
+        "crystal-lizard/cl-rsg.com": {
+            "name": "CL-RSG",
+            "tags": ["wip"]
+        }
+	}
+}

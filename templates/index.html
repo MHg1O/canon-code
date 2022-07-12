@@ -13,21 +13,21 @@
 <p>See also my <a href="./models/index.html">index of models</a>.</p>
 
 <table>
-    {% for family, sites in site_info  %}
+    {% for family, sites in families.items() %}
     <tr><th colspan=6><h2>{{ family }}</h2></th></tr>
-    {% for internal_name, site in sites %}
+    {% for site_id, site in sites.items() %}
     <tr>
         {% if "url" in site %}
-        <td><a href="{{ site["url"] }}">&#x1f310;</a></td>
+        <td><a href="{{ site['url'] }}">&#x1f310;</a></td>
         {% else %}
         <td></td>
         {% endif %}
         {% if "wip" in site["tags"] %}
         <td>&#x1f6a7;</td>
         {% else %}
-        <td><a href="sites/{{ internal_name }}/index.html">&#x1f4da;</a></td>
+        <td><a href="./sites/{{ site_id }}/index.html">&#x1f4da;</a></td>
         {% endif %}
-		<td>{{ site["name"] }}{% if "ppv" in site["tags"] %} <span class="tooltip" title="pay-per-view">&#x1f4b8;</span>{% endif %}</td>
+        <td>{{ site["name"] }}{% if "ppv" in site["tags"] %} <span class="tooltip" title="pay-per-view">&#x1f4b8;</span>{% endif %}</td>
         {% if "dates" in site %}
         <td>{% if site["dates"][0] %}{{ site["dates"][0] }}{% endif %}</td>
         <td>–</td>
@@ -37,4 +37,5 @@
     {% endfor %}
     {% endfor %}
 </table>
+
 {% endblock %}

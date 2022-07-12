@@ -1,29 +1,47 @@
 {% extends "base.html" %}
 
 {% block title %}Models{% endblock %}
-
 {% block head %}
-<style>.private { color: red; }</style>
+    <script src="../../../static/script.js"></script>
+    <script>window.onload = function() { processSearch(document.getElementById("search")); }</script>
 {% endblock %}
 
 {% block body %}
-Jump to
-<ul>
-	{% for family in families.keys() %}
-	<li><a href="#{{ family }}">{{ family }}</a></li>
-	{% endfor %}
-</ul>
 
-{% for family, models in families.items() %}
 <table style="margin-left: auto; margin-right: auto">
-	<tr id="{{ family }}"><th colspan=4><h1>{{ family }}</h1></th></tr>
+    <tr>
+        <td></td>
+        <td colspan=2>
+            Jump to
+            <ul>
+                {% for family in family_models.keys() %}
+                <li><a href="#{{ family }}">{{ family }}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+        </td>
+    </tr>
+
+    <tr><th colspan=4><h1>Search</h1></th></tr>
+    <tr><td colspan=4 align=center><input id="search" type=search></td></tr>
+    <tr>
+        {% for model in all_models %}
+        <td id="search_result_{{ model.model_id }}" style="display:none">
+            <a href="./{{ model.model_id }}.html"><img src="{{ model_image(model.model_id) }}"></a>
+            <p align="center"{% if model.model_id in private_models %} class="private"{% endif %}>{{ model.display_name }}</p>
+        </td>
+        {% endfor %}
+    </tr>
+
+    {% for family, models in family_models.items() %}
+    <tr id="{{ family }}"><th colspan=4><h1>{{ family }}</h1></th></tr>
 	{% for row in models %}
 	<tr>
 		{% for model in row %}
 		{% if model %}
 		<td>
-			<a href="./{{ model.model_id }}.html"><img src="{{ model.image }}"></a>
-			<p align="center"{% if model.is_private %} class="private"{% endif %}>{{ model.name }}</p>
+			<a href="./{{ model.model_id }}.html"><img src="{{ model_image(model.model_id) }}"></a>
+            <p align="center"{% if model.model_id in private_models %} class="private"{% endif %}>{{ model.display_name }}</p>
 		</td>
 		{% else %}
 		<td width=200></td>
@@ -31,6 +49,6 @@ Jump to
 		{% endfor %}
 	</tr>
 	{% endfor %}
-</table>
 {% endfor %}
+</table>
 {% endblock %}
