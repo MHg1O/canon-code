@@ -1,36 +1,41 @@
 # MH's index
 
-This document describes MHg1O's index system. At a high level, it is a way of representing information about paysites that can be translated into a HTML-based index using a program that comes with the system.
+This document describes MHg1O's index system. At a high level, it is a way of representing information about paysites that a program (included with the system) can translate into a human-readable Web-based index.
 
 ## Conceptual model
 
 This system was designed for modelling contortion paysites, and it is probably easier to understand the design decisions that have been made if you first understand what it is we are trying to represent.
  * The central object that we are concerned with is the "item": this is something like a photoset or a video, or both at the same time. Items have attributes like a name, a description, a date of release, and so on. Each item belongs to exactly one site.
  Items may be related to other items. This usually means that either:
-   1. the items are a matching video/photoset pair (e.g. zlata.de z18-05 and 601-74), or
+   1. the items are a matching video/photoset pair (e.g. zlata.de [z18-05](sites/zlata.de/zlata.de-4/index.html#z18-05) and [601-74](sites/zlata.de/zlata.de-4/index.html#601-74)), or
    2. the items are different releases of the same video/photoset (e.g. the version of video 406-02 released on zlata.de on 2013-02-02, and the version released on the zlata.de Clips4Sale page on 2018-11-02)
  * Items are grouped into sites. A site is typically a Web site or a specific page on a site such as Clips4Sale or OnlyFans. Sites come and go, so each site may have a time period associated with it: Zlata.de from 2016 to the present day is considered a different site to Zlata.de from 2010 to 2016.
- * Sites are grouped into families of sites.
+ * Sites are grouped into families of sites: the Flexshow family includes Flexshow itself, Flexshow-Media, Flexshow-Archive, Fantastic-Bodies, and some others.
  * Parallel to items, sites, and site families, there are models. Each item may be associated with any number of models that the item features.
 
 ## Storing information
 
-Information about items, sites, site families, and models is stored in JSON files. The system makes some assumptions about how these files are arranged, which will be stated in the sections below. Everything in the system is organised relative to a directory referred to as the `root`.
+Information about items, sites, site families, and models is stored in JSON files. The system makes some assumptions about how these files are arranged; these will be stated in the sections below. Everything in the system is organised relative to a directory referred to as the `root`.
 
 ### The master config
 
 This is the file that organises sites into families. It should be located at `<root>/config.json`, and has the following keys:
- * `families`: a mapping of human-readable site family names to the corresponding site config files; the addresses of these config files are assumed to be relative to `root`.
+ * `families`: a dict where each key is the name of a family and each value is a mapping of site internal IDs to the config file that stores information about the site. Site internal IDs are the way a site is referred to by the system; importantly, the index for a site will be placed at `<index_root>/<site_id>/index.html`.
  * `extra_configs`: a mapping of site internal IDs to their config data; the structure a site's config data is described below. This doesn't provide any new functionality, but I like to use it to store configs for work-in-progress indices that don't deserve their own file yet.
+ * `index_root`: the directory in which the HTML files that make up the index should be placed.
+ * `static_files`: a directory of static files containing some auxiliary files used to display the HTML index and the profile images of the models.
+ * `models_file`: a file containing information about the models in the system.
+ * `private_models_file`: a file that records which models currently have their page generated in "private mode", explained below.
+ * `relations_dir`: a directory containing files in which relations between items are recorded.
 
 A master config may look something like this:
 
 ```JSON
 {
   "families": {
-    "Zlata.de": [
-      "./data/zlata.de/zlatexa.com/config.json"
-    ]
+    "Zlata.de": {
+      "zlata.de/zlatexa.com": "./data/zlata.de/zlatexa.com/config.json"
+    }
   },
   "extra_configs": {
     "zlata.de/zlata.de-4": {
@@ -43,27 +48,6 @@ A master config may look something like this:
 ```
 
 ### Site configs
-
-Each site has its own config file. There is some flexibility about where site configs can be stored, but the system was designed with the following structure in mind:
-
-```
-root
-├── config.json
-├── <family-1>
-│   ├── <site-1>
-│   │   ├── config.json
-│   │   └── info.json
-│   └── <site-2>
-│       ├── config.json
-│       └── info.json
-├── <family-2>
-...
-└── html
-```
-
-This is important because each site has an internal ID that is used to decide where to place the index that is generated for it. The internal ID of a site is `<second parent of config file>/<first parent of config file>`; for example, the internal ID of the site described by `root/<family-1>/<site-2>/config.json` is `<family-1>/site-2>`. The index for each site is generated at `root/html/sites/<site internal id>.html`.
-
-Each item also has full item ID, which is `<site internal ID>/<item id>`. If `<family-1>/<site-2>` contains an item with ID 100-01, its full item ID would be `<family-1>/<site-2>/100-01`.
 
 A site config file contains some information about a site and specifies where the files with the information about its items are located. Each site config file contains a mapping with the following keys:
  * `name` is the name of the site; this may be different to its URL. The site with URL `flexshow.com` has name `Flexshow`.
@@ -89,33 +73,30 @@ A site config file contains some information about a site and specifies where th
 
 ### Model files
 
-Each site may have a model file that maps model IDs to the list of items that they appear in. More specifically, each key is a model ID, and each value is one of the following:
- * a list of item IDs, or
+Each site may have a model file that maps model IDs to the list of items that they appear in. More specifically, each key is a model ID, and each value is a list where each element of the list is one of the following:
+ * an item ID
+ * a pattern that matches some item ID(s)
  * a dictionary containing the following keys:
-   * `items`: a list of item IDs
+   * `items`: a list of item IDs or item ID patterns
    * `credited_as`: a name that will appear in parentheses after the model's name
-   * `display_name`: a name that will appear instead of the model's name
 
 The values in a list of item IDs can use a limited form of shell-style globbing. Specifically:
  * `*` matches zero or more of any character; on its own, this will match any item ID. We can also use it more carefully: `FELICIA v-*` will match `FELICIA v-01`, `FELICIA v-02`, and so on.
  * `?` matches precisely one of any character. The pattern above can be replaced with `FELICIA v-??` to match `FELICIA v-01` but not `FELICIA v-1`.
+ * `{a,b,c}` matches `a` or `b` or `c`. For example, `Album #{224,225,238}` matches `Album #224`, `Album #225`, or `Album #238`.
+
+Note that in order to speed up the process of matching patterns to item IDs, if a pattern appears as the ID of an item in the site, the check for other matching item IDs will not be performed.
 
 An example of a model file is given below:
 
 ```JSON
 {
-  "anna-svirina": [...],
-  "julia-günthel": {"display_name": "Zlata", "items": [...]},
-  "anna-buleeva": {"credited_as": "Kate", "items": [...]}
+  "anna-svirina": ["anya2_*"],
+  "anna-buleeva": {"credited_as": "Kate", "items": ["anya5_{01,03,04}"]}
 }
 ```
 
-On the site index page,
- * Anna Svirina will have her displayed normally,
- * Julia Günthel's name will be displayed as Zlata,
- * Anna Buleeva's name will be displayed as "Anna Buleeva (as Kate)"
-
-Note that a model can have both a `credited_as` and a `display_name`.
+On the site index page, Anna Svirina will have her name displayed normally and Anna Buleeva's name will be displayed as "Anna Buleeva (as Kate)".
 
 ### Site info files
 
@@ -136,10 +117,11 @@ When the information about a site is being loaded by the system, the primary inf
 
 ### The model info file
 
-Information about models is all stored in one file, assumed to be at `root/model-info.json`. This is a mapping of model IDs (by default, eight-character-long strings with uppercase letters, lowercase letters, and numbers, but you can use anything) to dictionaries containing information about them. The following keys are supported:
+Information about models is all stored in one file, which is a mapping of model IDs (by default, eight-character-long strings with uppercase letters, lowercase letters, and numbers, but you can use anything) to dictionaries containing information about them. The following keys are supported:
  * `name` is the model's name.
- * `biography` is intended to be a biography, but it can be anything; the content of this field is trusted, so if it contains HTML markup, this will be displayed by your browser.
- * `links` is a list of relevant links; these are also trusted.
+ * `display_name` is akin to a stage name, i.e. another name that the model is more commonly known by. Julia Günthel's display name is Zlata.
+ * `biography` is intended to be a biography, but it can be anything; the content of this field can contain Markdown, which will be converted to HTML when the index page for a model is generated.
+ * `links` is a list of relevant links; these can also contain Markdown.
  * `alt_spelling` is an alternative (usually Cyrillic) spelling of the model's name.
  * `aliases` is a list of other names that the model has been known by.
 
@@ -152,10 +134,10 @@ Information about models is all stored in one file, assumed to be at `root/model
       "Kate"
     ],
     "alt_spelling": "Анна Булеева",
-    "biography": "<h2>Biography</h2>Anna Buleeva is a Russian freelance contortionist based in New York City.",
+    "biography": "## Biography\n\nAnna Buleeva is a Russian freelance contortionist based in New York City.",
     "links": [
-      "<a href='https://www.facebook.com/...'>Anna Vladimirovna</a> on Facebook",
-      "<a href='https://www.instagram.com/annavladiii/'>@annavladiii</a> on Instagram",
+      "[Anna Vladimirovna](https://www.facebook.com/...) on Facebook",
+      "[@annavladiii](https://www.instagram.com/annavladiii/) on Instagram",
 
     ]
   }
@@ -169,11 +151,11 @@ Information about models is all stored in one file, assumed to be at `root/model
 
 By default, model pages are generated in "private mode", meaning that the biography is not displayed, and items in `links` are not displayed if they contain links to vk.com and facebook.com.
 
-Each model may also have an image. For a model with ID `<model ID>`, this is located at `root/static/model-images/<model ID>.jpg`. If no such image exists, `root/static/default-model-img.jpg` is used instead.
+Each model may also have an image. For a model with ID `<model ID>`, this is located at `<root>/<static_files>/model-images/<model ID>.jpg`. If no such image exists, `<root>/<static_files>/default-model-img.jpg` is used instead.
 
 ### Relation files
 
-Any file with a .json extension in `root/relations` and its subdirectories is treated as a relation file; these specify which files are related to one another.
+Any file with a .json extension in `<root>/<relations_dir>` and its subdirectories is treated as a relation file; these specify which files are related to one another.
 
 There are typically a large number of relations, and instead of storing them all in a single file, it may be useful to store them in files that mirror the structure of your site info files, e.g. if you have a config file at `root/data/zlata.de/zlata.de-4/config.json`, you can store relations for that site at `root/relations/zlata.de/zlata.de-4.json`.
 
@@ -183,7 +165,7 @@ A relation file contains a dictionary where values are lists of related items (i
 {
   "zlata.de": [
     [
-      "]iamflexigirl.com/004-03",
+      "iamflexigirl.com/004-03",
       "zlata.de-4/z19-10"
     ]
   ],
@@ -226,3 +208,5 @@ Importantly, each item ID should only appear once. When the relation file below 
  * use markdown in model info file biographies and links
  * specify the location of relation files, the model file in global config
  * document the CLI
+ * better private mode
+ * README: check the list of keys in a site config, check which keys are mandatory/optional, which keys are required in an extra config, and whether an index can be generated for an extra config
